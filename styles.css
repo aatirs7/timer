@@ -1,0 +1,218 @@
+:root{
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.68);
+  --glass: rgba(20,20,22,0.35);
+  --glass-2: rgba(20,20,22,0.50);
+  --stroke: rgba(255,255,255,0.14);
+  --shadow: 0 18px 40px rgba(0,0,0,0.45);
+  --radius: 18px;
+}
+
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  overflow:hidden;
+  background:#000;
+}
+
+.bg{
+  position:fixed;
+  inset:0;
+  background-position:center;
+  background-size:cover;
+  transform: scale(1.02);
+  filter: saturate(1.05) contrast(1.05);
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(1000px 700px at 50% 35%, rgba(0,0,0,0.25), rgba(0,0,0,0.72)),
+    linear-gradient(to bottom, rgba(0,0,0,0.10), rgba(0,0,0,0.55));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.app{
+  position:relative;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  padding: 22px;
+  gap: 18px;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.pill{
+  display:flex;
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  overflow:hidden;
+  box-shadow: var(--shadow);
+}
+
+.pill-btn{
+  appearance:none;
+  border:0;
+  background:transparent;
+  color: var(--muted);
+  padding: 10px 14px;
+  cursor:pointer;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.pill-btn.active{
+  background: rgba(255,255,255,0.12);
+  color: var(--text);
+}
+
+.actions{
+  display:flex;
+  gap: 10px;
+}
+.icon-btn{
+  appearance:none;
+  border: 1px solid var(--stroke);
+  background: var(--glass);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 999px;
+  cursor:pointer;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+}
+.icon-btn:active{ transform: translateY(1px); }
+
+.center{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap: 18px;
+  text-align:center;
+}
+
+.time{
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1;
+  text-shadow: 0 14px 50px rgba(0,0,0,0.55);
+  user-select:none;
+  font-size: clamp(64px, 10vw, 132px);
+}
+
+.countdown-panel{
+  width: min(520px, 92vw);
+  padding: 14px 14px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke);
+  background: var(--glass-2);
+  box-shadow: var(--shadow);
+}
+
+.presets{
+  display:flex;
+  gap: 10px;
+  justify-content:center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.chip{
+  appearance:none;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 999px;
+  cursor:pointer;
+  font-weight: 700;
+  min-width: 58px;
+}
+.chip:active{ transform: translateY(1px); }
+
+.setrow{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.setlabel{
+  color: var(--muted);
+  font-weight: 600;
+}
+.setinput{
+  width: 110px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--stroke);
+  background: rgba(0,0,0,0.22);
+  color: var(--text);
+  outline:none;
+  font-weight: 700;
+  text-align:center;
+}
+
+.controls{
+  display:flex;
+  gap: 12px;
+  justify-content:center;
+}
+
+.primary, .secondary{
+  appearance:none;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  cursor:pointer;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  padding: 12px 18px;
+  min-width: 120px;
+  box-shadow: var(--shadow);
+}
+.primary{
+  background: rgba(255,255,255,0.14);
+  color: var(--text);
+}
+.secondary{
+  background: rgba(0,0,0,0.28);
+  color: var(--text);
+}
+.primary:active,.secondary:active{ transform: translateY(1px); }
+
+.subtext{
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.footer{
+  display:flex;
+  justify-content:center;
+  padding-bottom: 6px;
+}
+.small{
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+  letter-spacing: 0.2px;
+}
+
+/* Reduce UI for very small heights */
+@media (max-height: 720px){
+  .countdown-panel{ padding: 12px; }
+  .app{ padding: 16px; }
+}

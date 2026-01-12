@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Deep Work Timer</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <meta name="color-scheme" content="dark light" />
+</head>
+<body>
+  <!-- Background image layer -->
+  <div id="bg" class="bg" aria-hidden="true"></div>
+
+  <!-- Frosted overlay for readability -->
+  <div class="overlay" aria-hidden="true"></div>
+
+  <main class="app" role="main">
+    <header class="topbar">
+      <div class="pill" id="modePill" title="Mode">
+        <button class="pill-btn active" id="btnCountdown" type="button">Countdown</button>
+        <button class="pill-btn" id="btnStopwatch" type="button">Stopwatch</button>
+      </div>
+
+      <div class="actions">
+        <button class="icon-btn" id="btnTheme" type="button" title="Change background">
+          Theme
+        </button>
+        <button class="icon-btn" id="btnFullscreen" type="button" title="Fullscreen">
+          Fullscreen
+        </button>
+      </div>
+    </header>
+
+    <section class="center">
+      <div class="time" id="timeDisplay" aria-live="polite">25:00</div>
+
+      <!-- Countdown controls -->
+      <div class="countdown-panel" id="countdownPanel">
+        <div class="presets" aria-label="Presets">
+          <button class="chip" data-min="25" type="button">25</button>
+          <button class="chip" data-min="45" type="button">45</button>
+          <button class="chip" data-min="50" type="button">50</button>
+          <button class="chip" data-min="90" type="button">90</button>
+        </div>
+
+        <div class="setrow">
+          <label class="setlabel" for="minutesInput">Minutes</label>
+          <input id="minutesInput" class="setinput" type="number" inputmode="numeric" min="1" max="999" value="25" />
+          <button class="chip" id="applyMinutes" type="button">Set</button>
+        </div>
+      </div>
+
+      <!-- Stopwatch controls (kept minimal) -->
+      <div class="hint" id="stopwatchHint" hidden>
+        Tip: stopwatch counts up. Reset to clear.
+      </div>
+
+      <div class="controls">
+        <button class="primary" id="btnStartPause" type="button">Start</button>
+        <button class="secondary" id="btnReset" type="button">Reset</button>
+      </div>
+
+      <div class="subtext" id="statusText">Ready.</div>
+    </section>
+
+    <footer class="footer">
+      <div class="small">Space = Start/Pause · R = Reset · T = Theme · F = Fullscreen</div>
+    </footer>
+  </main>
+
+  <audio id="ding" preload="auto">
+    <!-- simple tiny beep using data URI (no extra file needed) -->
+    <source src="data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YSwAAAB/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/" type="audio/wav">
+  </audio>
+
+  <script src="./app.js"></script>
+</body>
+</html>
