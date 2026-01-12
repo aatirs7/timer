@@ -25,6 +25,10 @@
         <button class="icon-btn" id="btnTheme" type="button" title="Change background">
           Theme
         </button>
+        <button class="icon-btn" id="btnFocus" type="button" title="Hide UI while running">
+  Focus
+</button>
+
         <button class="icon-btn" id="btnFullscreen" type="button" title="Fullscreen">
           Fullscreen
         </button>
@@ -33,6 +37,11 @@
 
     <section class="center">
       <div class="time" id="timeDisplay" aria-live="polite">25:00</div>
+<!-- Minimal controls overlay (shown only when UI is hidden) -->
+<div class="controls-overlay" id="controlsOverlay" aria-hidden="true">
+  <button class="primary" id="btnStartPauseOverlay" type="button">Pause</button>
+  <button class="secondary" id="btnResetOverlay" type="button">Reset</button>
+</div>
 
       <!-- Countdown controls -->
       <div class="countdown-panel" id="countdownPanel">
