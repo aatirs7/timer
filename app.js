@@ -24,12 +24,22 @@ const minutesInput = document.getElementById("minutesInput");
 const applyMinutes = document.getElementById("applyMinutes");
 const ding = document.getElementById("ding");
 
+const btnFocus = document.getElementById("btnFocus");
+const controlsOverlay = document.getElementById("controlsOverlay");
+const btnStartPauseOverlay = document.getElementById("btnStartPauseOverlay");
+const btnResetOverlay = document.getElementById("btnResetOverlay");
+
+
 const presetButtons = Array.from(document.querySelectorAll(".chip[data-min]"));
 
 /** State */
 let mode = load("mode", "countdown"); // "countdown" | "stopwatch"
 let isRunning = false;
 let tickHandle = null;
+
+let focusMode = load("focusMode", "0") === "1";
+let revealTimer = null;
+
 
 // countdown: remainingMs
 // stopwatch: elapsedMs
@@ -67,6 +77,30 @@ function init() {
 
   // Fullscreen
   btnFullscreen.addEventListener("click", toggleFullscreen);
+// Focus mode toggle
+applyFocusMode(focusMode);
+
+btnFocus.addEventListener("click", () => {
+  focusMode = !focusMode;
+  save("focusMode", focusMode ? "1" : "0");
+  applyFocusMode(focusMode);
+});
+
+// Overlay controls mirror main controls
+btnStartPauseOverlay.addEventListener("click", toggleStartPause);
+btnResetOverlay.addEventListener("click", resetTimer);
+
+// Reveal controls on mouse move while running (focus mode)
+window.addEventListener("mousemove", () => {
+  if (!focusMode || !isRunning) return;
+  revealFocusControls();
+});
+
+// Touch devices: tap to reveal
+window.addEventListener("touchstart", () => {
+  if (!focusMode || !isRunning) return;
+  revealFocusControls();
+}, { passive: true });
 
   // Presets
   presetButtons.forEach((b) => {
@@ -130,6 +164,10 @@ function setMode(newMode, opts = { persist: true }) {
   stopTick();
 
   isRunning = false;
+  document.body.classList.remove("focus-on");
+document.body.classList.remove("focus-reveal");
+updateFocusButtonLabel();
+
   btnStartPause.textContent = "Start";
   statusText.textContent = "Ready.";
 
@@ -176,7 +214,7 @@ function setCountdownMinutes(mins) {
 /** ---------- Timer controls ---------- */
 function toggleStartPause() {
   if (!isRunning) {
-    // Start
+    // Start / Resume
     if (mode === "countdown" && remainingMs <= 0) {
       // If it already finished, reset to whatever input says
       const mins = clampInt(minutesInput.value, 1, 999);
@@ -187,13 +225,25 @@ function toggleStartPause() {
     btnStartPause.textContent = "Pause";
     statusText.textContent = "Running…";
     startTick();
+
+    // Focus mode: hide UI while running + reveal controls briefly
+    if (focusMode) {
+      document.body.classList.add("focus-on");
+      revealFocusControls();
+    }
   } else {
     // Pause
     isRunning = false;
     btnStartPause.textContent = "Resume";
     statusText.textContent = "Paused.";
     stopTick();
+
+    // Focus mode: show full UI when paused
+    document.body.classList.remove("focus-on");
+    document.body.classList.remove("focus-reveal");
   }
+
+  updateFocusButtonLabel?.();
   render();
 }
 
@@ -213,6 +263,12 @@ function resetTimer() {
   }
 
   render();
+  if (focusMode) {
+  document.body.classList.toggle("focus-on", isRunning);
+  if (!isRunning) document.body.classList.remove("focus-reveal");
+}
+updateFocusButtonLabel();
+
 }
 
 function startTick() {
@@ -317,4 +373,26 @@ function load(key, fallback) {
 function clampInt(v, min, max) {
   const n = Math.max(min, Math.min(max, parseInt(String(v), 10) || min));
   return n;
+}
+function applyFocusMode(on) {
+  document.body.classList.toggle("focus-on", on && isRunning);
+  // When not running, don't hide UI even if focus is toggled on
+  if (!isRunning) {
+    document.body.classList.remove("focus-on");
+    document.body.classList.remove("focus-reveal");
+  }
+  updateFocusButtonLabel();
+}
+
+function updateFocusButtonLabel() {
+  if (!btnFocus) return;
+  btnFocus.textContent = focusMode ? "Focus: On" : "Focus: Off";
+}
+
+function revealFocusControls() {
+  document.body.classList.add("focus-reveal");
+  clearTimeout(revealTimer);
+  revealTimer = setTimeout(() => {
+    document.body.classList.remove("focus-reveal");
+  }, 1500);
 }

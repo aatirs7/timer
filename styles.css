@@ -216,3 +216,40 @@ body{
   .countdown-panel{ padding: 12px; }
   .app{ padding: 16px; }
 }
+/* Focus mode: hide UI while running, reveal controls on movement/hover */
+body.focus-on .topbar,
+body.focus-on .countdown-panel,
+body.focus-on .hint,
+body.focus-on .controls,
+body.focus-on .footer,
+body.focus-on .subtext {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.controls-overlay{
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 5;
+}
+
+/* When UI is hidden, the overlay becomes the only interactive controls */
+body.focus-on.focus-reveal .controls-overlay{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Optional: also reveal on hover */
+body.focus-on:hover .controls-overlay{
+  opacity: 1;
+  pointer-events: auto;
+}
